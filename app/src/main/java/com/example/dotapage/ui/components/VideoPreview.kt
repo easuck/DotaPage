@@ -39,7 +39,7 @@ fun VideoPreviewWithButton(imageId:Int = R.drawable.video_preview1){
             modifier = Modifier
                 .clip(CircleShape)
                 .size(48.dp)
-                .background(Color.Gray),
+                .background(Color(0x3DFFFFFF)),
             contentAlignment = Alignment.Center
         ){
             Image(
