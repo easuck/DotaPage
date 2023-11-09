@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,6 +45,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -88,11 +91,16 @@ fun DotaScreen(){
     val context = LocalContext.current
     val lazyListState = rememberLazyListState()
 
+    val chips = listOf("MOBA", "MULTIPLAYER", "STRATEGY")
+
     LazyColumn(state = lazyListState,
         modifier = Modifier.fillMaxSize()
     ){
         item {
             DotaHeader()
+        }
+        item{
+            ScrollableChipsRow(chips)
         }
         item {
             Text(
@@ -101,7 +109,6 @@ fun DotaScreen(){
                 modifier = Modifier.padding(
                     start = 24.dp,
                     end = 24.dp,
-                    top = 69.dp,
                     bottom = 43.dp
                 ),
                 fontSize = 12.sp
@@ -127,7 +134,54 @@ fun DotaScreen(){
     }
 }
 
+@Composable
+fun ScrollableChipsRow(chips:List<String>){
+    LazyRow(
+        modifier = Modifier.padding(
+            start = 24.dp,
+            top = 20.dp,
+            bottom = 30.dp
+        )
+    ){
+        items(chips) {
+            item -> ChipContent(item)
+            Spacer(modifier = Modifier.width(10.dp))
+        }
+    }
+}
+
 @Preview
+@Composable
+fun ChipContent(text:String = "MOBA"){
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .clip(RoundedCornerShape(100.dp))
+            .background(Color.Blue)
+            .padding(
+                start = 10.dp,
+                end = 10.dp,
+                top = 5.dp,
+                bottom = 5.dp
+            )
+    ){
+        Text(
+            text = text,
+            color = Color.Cyan,
+            fontSize = 10.sp
+        )
+    }
+}
+
+@Preview
+@Composable
+fun RatingBlockPreview(){
+    LazyColumn(){
+        item{
+            RatingBlock()
+        }
+    }
+}
 @Composable
 fun RatingBlock(modifier:Modifier = Modifier){
     Text(
@@ -141,7 +195,7 @@ fun RatingBlock(modifier:Modifier = Modifier){
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.padding(start = 24.dp, top = 24.dp)
+        modifier = modifier.padding(start = 24.dp, top = 12.dp)
     ){
         Text(
             text = "4.9",
@@ -163,7 +217,7 @@ fun RatingBlock(modifier:Modifier = Modifier){
 @Preview
 @Composable
 fun Comments(){
-    Column {
+    Column(modifier = Modifier.padding(top = 30.dp)) {
         CommentBlock(R.drawable.user_1, R.string.username_1, R.string.date_1, R.string.comment_1)
         Divider(
             color = Color.Gray,
@@ -223,10 +277,11 @@ fun CustomButton() {
     Button(
         onClick = {},
         modifier = Modifier
-            .padding(16.dp)
+            .padding(24.dp)
             .fillMaxWidth()
             .height(64.dp),
-        colors = ButtonDefaults.buttonColors(Color.Yellow)
+        colors = ButtonDefaults.buttonColors(Color.Yellow),
+        shape = RoundedCornerShape(12.dp)
     ) {
         Text(
             text = stringResource(id = R.string.installation_button),
@@ -245,6 +300,31 @@ fun VideoPreview(imageId : Int){
         modifier = Modifier.size(240.dp, 135.dp))
 }
 
+@Preview
+@Composable
+fun VideoPreviewWithButton(imageId:Int = R.drawable.video_preview1){
+    Box(
+        contentAlignment = Alignment.Center
+    ){
+        Image(painter = painterResource(id = imageId),
+            contentDescription = null,
+            modifier = Modifier.size(240.dp, 135.dp))
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(48.dp)
+                .background(Color.Gray),
+            contentAlignment = Alignment.Center
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.play_button),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
+
 @Composable
 fun VideoPreviewRow(images: List<Int>){
     LazyRow(
@@ -252,8 +332,13 @@ fun VideoPreviewRow(images: List<Int>){
         horizontalArrangement = Arrangement.spacedBy(15.dp),
         modifier = Modifier.height(135.dp)
     ){
-        items(images){
-            image -> VideoPreview(imageId = image)
+        itemsIndexed(images){ index, image ->
+            if (index == 0){
+                VideoPreviewWithButton(imageId = image)
+            }
+            else{
+                VideoPreview(imageId = image)
+            }
         }
     }
 }
