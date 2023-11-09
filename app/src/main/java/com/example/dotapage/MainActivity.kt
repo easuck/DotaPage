@@ -28,10 +28,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -111,22 +116,46 @@ fun DotaScreen(){
             )
         }
         item{
-            Text(
-                text = stringResource(id = R.string.comments),
-                color = Color.White,
-                modifier = Modifier.padding(
-                    top = 20.dp,
-                    bottom = 29.dp,
-                    start = 24.dp
-                ),
-                fontSize = 16.sp
-            )
+            RatingBlock()
         }
         item{
             Comments()
         }
         item {
             CustomButton()
+        }
+    }
+}
+
+@Preview
+@Composable
+fun RatingBlock(modifier:Modifier = Modifier){
+    Text(
+        text = stringResource(id = R.string.comments),
+        color = Color.White,
+        modifier = Modifier.padding(
+            start = 24.dp,
+            top = 20.dp
+        ),
+        fontSize = 16.sp
+    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.padding(start = 24.dp, top = 24.dp)
+    ){
+        Text(
+            text = "4.9",
+            color = Color.White,
+            fontSize = 48.sp
+        )
+        Spacer(modifier = modifier.width(17.dp))
+        Column {
+            RatingBar(modifier,5f)
+            Spacer(modifier = modifier.height(5.dp))
+            Text(
+                text = stringResource(id = R.string.rate_amount) + " reviews",
+                color = Color.Gray
+            )
         }
     }
 }
@@ -240,6 +269,7 @@ private fun ApplySystemBarColors() {
     }
 }
 
+@Preview
 @Composable
 fun DotaHeader(modifier: Modifier = Modifier){
     Box(modifier = modifier
@@ -255,6 +285,27 @@ fun DotaHeader(modifier: Modifier = Modifier){
         )
         Box(modifier = Modifier.offset(21.dp, 265.dp)){
             DotaLogo()
+        }
+        Column(modifier = Modifier
+            .offset(124.dp, 300.dp)
+            .height(50.dp)){
+            Text(
+                text = stringResource(id = R.string.game_name),
+                color = Color.White,
+                fontSize = 20.sp
+            )
+            Spacer(modifier = modifier.height(7.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                RatingBar(modifier, 5f)
+                Spacer(modifier = modifier.width(10.dp))
+                Text(
+                    text = stringResource(id = R.string.rate_amount),
+                    color = Color.Gray,
+                    fontSize = 12.sp
+                )
+            }
         }
     }
 }
@@ -276,5 +327,27 @@ fun DotaLogo(modifier: Modifier = Modifier){
         Image(painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
             modifier = Modifier.size(54.dp))
+    }
+}
+
+@Preview
+@Composable
+fun RatingBar(modifier:Modifier = Modifier, rating:Float = 4.9f){
+    var ratingState by remember{
+        mutableFloatStateOf(rating)
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ){
+        for (i in 1..5){
+            Icon(
+                painter = painterResource(id = R.drawable.star),
+                contentDescription = null,
+                modifier = modifier.size(10.dp),
+                tint = if (i <= ratingState) Color.Yellow else Color.Gray
+            )
+        }
     }
 }
