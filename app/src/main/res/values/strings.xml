@@ -10,5 +10,7 @@
     <string name="comment_2">\"I can\'t fall asleep until I hear something about my parents.\"</string>
     <string name="date_1">February 14, 2019</string>
     <string name="date_2">February 15, 2019</string>
-    <string name="comments">Review and Ratings</string>
+    <string name="comments">Review &amp; Ratings</string>
+    <string name="game_name">DoTA 2</string>
+    <string name="rate_amount">70M</string>
 </resources>
