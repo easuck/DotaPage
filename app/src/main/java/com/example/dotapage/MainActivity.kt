@@ -45,14 +45,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import com.example.dotapage.ui.theme.AppTheme
 import com.example.dotapage.ui.theme.DotaPageTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -78,7 +77,7 @@ fun MainScreen() {
         ApplySystemBarColors()
         // A surface container using the 'background' color from the theme
         Surface(
-            color = Color.Black,
+            color = AppTheme.BgColors.primary,
             modifier = Modifier.fillMaxSize(),
         ) {
             DotaScreen()
@@ -105,7 +104,7 @@ fun DotaScreen(){
         item {
             Text(
                 text = stringResource(id = R.string.dota_description),
-                color = Color.White,
+                color = AppTheme.TextColors.description,
                 modifier = Modifier.padding(
                     start = 24.dp,
                     end = 24.dp,
@@ -157,7 +156,7 @@ fun ChipContent(text:String = "MOBA"){
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(RoundedCornerShape(100.dp))
-            .background(Color.Blue)
+            .background(AppTheme.BgColors.chip)
             .padding(
                 start = 10.dp,
                 end = 10.dp,
@@ -167,7 +166,7 @@ fun ChipContent(text:String = "MOBA"){
     ){
         Text(
             text = text,
-            color = Color.Cyan,
+            color = AppTheme.TextColors.chip,
             fontSize = 10.sp
         )
     }
@@ -220,7 +219,7 @@ fun Comments(){
     Column(modifier = Modifier.padding(top = 30.dp)) {
         CommentBlock(R.drawable.user_1, R.string.username_1, R.string.date_1, R.string.comment_1)
         Divider(
-            color = Color.Gray,
+            color = AppTheme.BgColors.divider,
             thickness = 1.dp,
             modifier = Modifier.padding(
                 start = 37.dp,
@@ -260,13 +259,13 @@ fun CommentBlock(userImage:Int, username: Int, date: Int, comment: Int){
                     fontSize = 16.sp)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = stringResource(id = date),
-                    color = Color.White,
+                    color = AppTheme.TextColors.date,
                     fontSize = 12.sp)
             }
         }
         Spacer(modifier = Modifier.height(17.dp))
         Text(text = stringResource(id = comment),
-            color = Color.White,
+            color = AppTheme.TextColors.comment,
             fontSize = 12.sp)
     }
 }
@@ -280,7 +279,7 @@ fun CustomButton() {
             .padding(24.dp)
             .fillMaxWidth()
             .height(64.dp),
-        colors = ButtonDefaults.buttonColors(Color.Yellow),
+        colors = ButtonDefaults.buttonColors(AppTheme.ButtonColors.primary),
         shape = RoundedCornerShape(12.dp)
     ) {
         Text(
@@ -404,7 +403,7 @@ fun DotaLogo(modifier: Modifier = Modifier){
             .background(color = Color.Black)
             .border(
                 width = 2.dp,
-                color = Color(0xFF1F2430),
+                color = AppTheme.BgColors.border,
                 shape = RoundedCornerShape(13.dp)
             ),
         contentAlignment = Alignment.Center
